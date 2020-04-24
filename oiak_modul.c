@@ -6,6 +6,9 @@
 #include <linux/kernel.h>	/* Needed for KERN_INFO */
 #include <linux/init.h>		/* Needed for the macros */
 
+#define DRIVER_AUTHOR "Mateusz Bączek, Marek Choinka"
+#define DRIVER_DESC   "Proszę 3.0"
+
 static int __init hello_2_init(void)
 {
 	printk(KERN_INFO "Hello, world 2\n");
@@ -19,3 +22,6 @@ static void __exit hello_2_exit(void)
 
 module_init(hello_2_init);
 module_exit(hello_2_exit);
+
+MODULE_AUTHOR(DRIVER_AUTHOR);	/* Who wrote this module? */
+MODULE_DESCRIPTION(DRIVER_DESC);	/* What does this module do */
