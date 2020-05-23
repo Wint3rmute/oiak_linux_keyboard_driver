@@ -11,6 +11,7 @@
 
 static int __init hello_2_init(void)
 {
+	printk("%d", kbdlight_get_level());
 	printk(KERN_INFO "Hello, world 2\n");
 	return 0;
 }
