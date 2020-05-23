@@ -30,6 +30,7 @@ Required packages (Arch package names, will probably be the same for other distr
 * `g++`
 * `linux-headers`
 
-### Compilation
+### Compilation & running
 
 `make`
+`sudo insmod oiak_modul.ko`
