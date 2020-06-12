@@ -18,7 +18,9 @@
 MODULE_LICENSE(DRIVER_LICENSE);
 
 // konami sequence; first from left is the last in sequence
-static const unsigned char konami[KONAMI_LENGTH] = {30,48,106,105,106,105,108,108,103,103};
+static const unsigned char konami[KONAMI_LENGTH] = {103, 103, 108, 108, 105, 106, 105, 106, 48, 30};
+
+static int current_konami_index = 0;
 
 static const unsigned char keycodes[256] =
     {
@@ -54,7 +56,7 @@ struct keyboard_device_t
     unsigned char *new_buff; // Buffer for the irq  URB
     char physical[64];       // Physical path
     char name[128];
-    unsigned char *last[KONAMI_LENGTH]; // last pressed buttons
+    // unsigned char *last[KONAMI_LENGTH]; // last pressed buttons
     bool pressed;             // defines whether the button was pressed or released
 };
 
@@ -80,11 +82,10 @@ static void keyboard_free_mem(struct usb_device *dev, struct keyboard_device_t *
 static void usb_keyboard_irq(struct urb *urb)
 {
 
-    printk(KERN_INFO "OMG OMG OMG OMG OMGOMGOMGOGOG OMG OMG");
+    //printk(KERN_INFO "OMG OMG OMG OMG OMGOMGOMGOGOG OMG OMG");
 
     int i,j,key;
     // new array that will hold copy of 'last' array
-    unsigned char *last_copy[KONAMI_LENGTH];
     struct keyboard_device_t *keyboard = urb->context;
     // specifies button status (pressed [true] or released [false])
     keyboard->pressed = !(keyboard->pressed);
@@ -118,13 +119,7 @@ static void usb_keyboard_irq(struct urb *urb)
                          (keyboard->new_buff[0] >> 1) & 1);
     }
 
-    // copy last pressed buttons to a bew array
-    for(i=0;i<KONAMI_LENGTH;i++){
-        if(keyboard->pressed){
-            last_copy[i] = keyboard->last[i];
-        }
-    }
-
+  
     // translation of scancodes received from keyboard
     // into codes that are understandable for kernel
     for (i = 2; i < 8; i++)
@@ -133,7 +128,22 @@ static void usb_keyboard_irq(struct urb *urb)
                                             keyboard->old[i], 6) == keyboard->new_buff + 8)
         {
             if (keycodes[keyboard->old[i]])
-                input_report_key(keyboard->indev, keycodes[keyboard->old[i]], 0);
+	    {	input_report_key(keyboard->indev, keycodes[keyboard->old[i]], 0);
+	    	printk(KERN_INFO "ehh %d", keycodes[keyboard->old[i]] );
+	    if(konami[current_konami_index] == keycodes[keyboard->old[i]] ) {
+
+		    printk(KERN_INFO "progresss %d", ++current_konami_index);
+		
+		    if(current_konami_index == 10) {
+			printk(KERN_INFO "AK jednak zdane");
+			current_konami_index = 0;
+		    }
+	
+	    } else {
+		    printk(KERN_INFO "regress"); current_konami_index = 0; }
+
+
+	    }
             else
                 hid_info(urb->dev,
                          "Unknown key (scancode %#x) released.\n", keyboard->old[i]);
