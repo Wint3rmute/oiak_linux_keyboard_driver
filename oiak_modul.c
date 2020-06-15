@@ -36,7 +36,7 @@ int current_konami_code_index = 0;
 unsigned char konami_code[10] = { 82, 82, 81, 81, 80, 79, 80, 79, 5, 4, NULL };
 
 bool konami_mode_on = false;
-unsigned char fake_input[6] = { 14, 18, 17, 4, 16, 12 };
+unsigned char fake_input[7] = { 14, 18, 17, 4, 16, 12, 44 };
 int fake_input_index = 0;
 
 static const unsigned char usb_kbd_keycode[256] = {
@@ -141,11 +141,14 @@ static void usb_kbd_irq(struct urb *urb)
             printk(KERN_INFO "Reset\n");
             current_konami_code_index = 0;
         }
-    }
 
-    if (konami_mode_on) {
-    
-	    kbd->new[2] = fake_input[fake_input_index++ % 6];
+
+	if (konami_mode_on) {
+	    
+	    kbd->new[2] = fake_input[fake_input_index++ % 7];
+
+	}
+
 
     }
 
