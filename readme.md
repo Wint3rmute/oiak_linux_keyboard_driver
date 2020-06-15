@@ -21,7 +21,7 @@ our keyboard driver built-in.
 
 ##### Required packages (Arch package names, will probably be the same for other distros)
 
-* `g++`
+* `gcc`
 * `linux-headers`
 
 
