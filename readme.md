@@ -3,7 +3,11 @@
 
 ## Knowledge base
 
-- [tldp](http://www.tldp.org/LDP/lkmpg/2.6/html/lkmpg.html#AEN121)
+- [Writing kernel modules](http://www.tldp.org/LDP/lkmpg/2.6/html/lkmpg.html#AEN121)
+- [Kernel config](https://wiki.gentoo.org/wiki/Kernel/Gentoo_Kernel_Configuration_Guide)
+- [Simple keyboard driver source](https://github.com/torvalds/linux/blob/master/drivers/hid/usbhid/usbkbd.c)
+- [Writing USB drivers](https://kernel.readthedocs.io/en/sphinx-samples/writing_usb_driver.html)
+- [Keyboard key codes](https://gist.github.com/MightyPork/6da26e382a7ad91b5496ee55fdc73db2)
 
 
 ## Building & installation
@@ -12,22 +16,23 @@
 
 #### Requirements
 
-Required packages (Arch package names, will probably be the same for other distros)
+##### Required packages (Arch package names, will probably be the same for other distros)
 
 * `g++`
 * `linux-headers`
 
 
-You also must prevent `usbhid` from taking over every usb device:
+##### You also must prevent `usbhid` from taking over every usb device:
 
 `sudo echo 'SUBSYSTEMS=="usb", DRIVERS=="usbhid", ACTION=="add", ATTR{authorized}="0"' > /etc/udev/rules.d/99-disable-hid.rules`
 
 
-Finally, build and load the module
+##### Finally, build and load the module
 
-`make`
-
-`sudo insmod oiak_modul.ko`
+```
+make
+sudo insmod oiak_modul.ko
+```
 
 ### As a builtin kernel driver
 
