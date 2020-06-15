@@ -12,7 +12,10 @@
 
 ## Building & installation
 
-### As kernel module
+You can build a standalone kernel module or use a kernel patch to build your very own kernel, with
+our keyboard driver built-in.
+
+### Building a kernel module
 
 #### Requirements
 
@@ -34,7 +37,7 @@ make
 sudo insmod oiak_modul.ko
 ```
 
-### As a builtin kernel driver
+### Compiling the kernel with our driver built in
 
 *instructions for Gentoo Linux*
 
